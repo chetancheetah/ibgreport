@@ -1,12 +1,22 @@
                 Name                   Type        Hours     OT-hours          Pay         tips    extra-tips cash-advance         Total 
-               Bijay         1002 - Servers         5.15          0.0          0.0       10.304         2.208          0.0        12.512 
-              Chitra         1002 - Servers         3.43          0.0          0.0        3.486         0.747          0.0         4.233 
-              Naveen         1002 - Servers         4.68          0.0          0.0       19.103        4.0935          0.0       23.1965 
-           Srinivasa         1002 - Servers         7.64          0.0          0.0          0.0           0.0          0.0           0.0 
-            UberEATS         1002 - Servers         4.02          0.0          0.0          0.0           0.0          0.0           0.0 
-             Pradeep          1007 - Owners          8.0         1.95          0.0         0.21         0.045          0.0         0.255 
-              Yogesh          1007 - Owners         6.93          0.0          0.0          0.0           0.0          0.0           0.0 
-          Washington  2007 - Lead Bartender         6.47          0.0          0.0      11.6355        1.8975          0.0        13.533 
-              Phurba       2008 - Host(ess)          8.0          1.1          0.0        0.455        0.0975          0.0        0.5525 
-             Kitchen                Kitchen          0.0          0.0          0.0        6.308           0.0          0.0         6.308 
-               Total                               54.32         3.05          0.0      51.5015        9.0885          0.0         60.59 
+    WOHL christopher         1001 - Kitchen         16.0          4.1          0.0          0.0           0.0          0.0           0.0 
+        SAYONE jorge         1001 - Kitchen          4.0          0.0          0.0          0.0           0.0          0.0           0.0 
+    REED christopher         1001 - Kitchen          8.0         3.92          0.0          0.0           0.0          0.0           0.0 
+    HERNANDEZ ulises         1001 - Kitchen        11.39          0.0          0.0          0.0           0.0          0.0           0.0 
+     ALDERETE MIGUEL         1001 - Kitchen         4.28          0.0          0.0          0.0           0.0          0.0           0.0 
+               jacki         1002 - Servers         3.85          0.0          0.0        12.19        1.8285        22.23       -8.2115 
+             Melinda         1002 - Servers         11.2          0.0          0.0        72.17       10.8255        15.11       67.8855 
+              Robert         1002 - Servers         5.27          0.0          0.0        55.78         8.367         4.86        59.287 
+               Megan         1002 - Servers        10.29          0.0          0.0        49.01        7.3515        22.16       34.2015 
+             Dominic         1002 - Servers          7.0          0.0          0.0        31.15        4.6725          0.0       35.8225 
+             Tiffany         1002 - Servers        12.82         0.62          0.0        97.74        14.661          0.0       112.401 
+             Kaushik          1007 - Owners         6.57          0.0          0.0          0.0           0.0          0.0           0.0 
+              Yogesh          1007 - Owners         22.5         8.47          0.0         6.16         0.924          0.0         7.084 
+               James          1007 - Owners        22.15         7.15          0.0          0.0           0.0          0.0           0.0 
+                Ritu          1007 - Owners         3.17          0.0          0.0          0.0           0.0          0.0           0.0 
+                 Ben 1008 - System Administrators         5.65          0.0          0.0          0.0           0.0          0.0           0.0 
+            Savannah            2009 - Host        12.08          0.0          0.0      12.5268         1.623          0.0       14.1498 
+             giselle            2009 - Host        10.09          0.0          0.0       6.1102        0.4905          0.0        6.6007 
+               Paige            2009 - Host         4.07          0.0          0.0       1.7008         0.051          0.0        1.7518 
+             Kitchen                Kitchen          0.0          0.0          0.0      53.0459           0.0          0.0       53.0459 
+               Total                              180.38        24.26          0.0     397.5837       50.7945        64.36      384.0182 

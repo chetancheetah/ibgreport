@@ -3,7 +3,7 @@ import csv
 from datetime import datetime
 
 if len(sys.argv) != 4:
-    print "usage python gen_tips.py shift_report.csv eod_report.csv transactions.csv"
+    print "usage python gen_tips.py shift_report.csv cashoutreport.csv transactions.csv"
     exit(1)
 
 report = {'Kitchen':{'type':'Kitchen', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}}
@@ -22,7 +22,10 @@ for r in rows:
     if not "End of Report" in r: continue
     cols = r.split(',')
     if cols[1] == '': continue
-    name = cols[1][1:-1].split(' ')[-1]
+    if cols[2][1:-1] == '1001 - Kitchen':
+        name = cols[1][1:-1]
+    else:
+        name = cols[1][1:-1].split(' ')[-1]
     if name not in shift.keys(): shift[name] = []
     shift[name].append({'Staff Type': cols[2][1:-1],
                             'Clock-In' : cols[4][1:] + cols[5][:-1],
@@ -37,7 +40,9 @@ with open(sys.argv[2]) as f:
 for r in rows:
     if not "End of Report" in r: continue
     cols = r.split(',')
-    trans[cols[13]] = {'Tip' : cols[16]}
+    trans[cols[15]] = {'Tip' : float(cols[16][1:]),
+                       'type' : cols[14][1:-1],
+                       'Amount' : float(cols[20][1:])}
 
 with open(sys.argv[3]) as f:
     rows = f.readlines()
@@ -86,6 +91,7 @@ shared_tips= {
     'Busser' : 0.10,     # 10%
     'Food Runner' : 0.05,#  5%
     '2008 - Host(ess)' : 0.02,    #  2%
+    '2009 - Host' : 0.02,    #  2%
     '2007 - Lead Bartender': 0.05,   #  5%
 }
 
@@ -93,10 +99,12 @@ shared_tips= {
 for tid, t in trans.iteritems():
     # 70% belong to the server
     if t['Staff'] not in report.keys() :
-        report['Kitchen']['tips'] += float(t['Tip'][1:])*0.7
+        report['Kitchen']['tips'] += t['Tip']
     else:
-        report[t['Staff']]['tips'] += float(t['Tip'][1:])*0.7
+        report[t['Staff']]['tips'] += t['Tip']
         pass
+    if t['type'] == 'CASH':
+        report[t['Staff']]['cash'] += t['Amount']
     #now lets split it
     #distribute the tips amongst the helpers
     for staff in shared_tips.keys():
@@ -116,9 +124,9 @@ for tid, t in trans.iteritems():
         if worked == 0:
             # if there was no busser  or food runner then assumption the server would have bussed
             if staff == 'Busser' or staff == 'Food Runner':
-                report[t['Staff'] if t['Staff'] in report.keys() else 'Kitchen']['extra-tips'] += float(t['Tip'][1:])*shared_tips[staff]
+                report[t['Staff'] if t['Staff'] in report.keys() else 'Kitchen']['extra-tips'] += t['Tip']*shared_tips[staff]
             else:
-                report['Kitchen']['tips'] += float(t['Tip'][1:])*shared_tips[staff]
+                report['Kitchen']['tips'] += t['Tip']*shared_tips[staff]
             continue
 #            print "No one worked as " + staff + " for bill " + t['Bill Number'] + " at " + t['Bill Date']
         for name, val in shift.iteritems():
@@ -132,7 +140,7 @@ for tid, t in trans.iteritems():
                 else:
                     to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
                 if  fr <= tran and tran <= to:
-                    report[name]['tips'] += (float(t['Tip'][1:])*shared_tips[staff])
+                    report[name]['tips'] += (t['Tip']*shared_tips[staff])
 
 print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
 hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
