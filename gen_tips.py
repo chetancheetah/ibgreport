@@ -77,14 +77,18 @@ for name, shifts in shift.iteritems():
         hours += float(s['Duration'])
         old = s
     old['hours'] = hours
+    wk = 0
     for s in shifts:
         hours = s['hours'] if s['hours'] <= 8.0 else 8.0
         ot_hours = 0.0 if s['hours'] <= 8.0 else (s['hours'] - 8.0)
         report[name]['hours'] += hours
         report[name]['ot-hours'] += ot_hours
-#        rate = float(s['Hourly Rate'][1:])
-#        report[name]['pay'] += hours * rate + ot_hours*1.5*rate
-
+        fr = datetime.strptime(s['Clock-In'], '%B %d %Y %H:%M %p')
+        fw = fr.isocalendar()[1]
+        if wk == fw and report[name]['hours'] > 40.0:
+            report[name]['ot-hours'] += report[name]['hours'] - 40.0
+            report[name]['hours'] = 40.0
+        wk = fw
 
 #how to share
 chino_shared_tips= {
