@@ -1,27 +1,27 @@
                 Name                   Type        Hours     OT-hours          Pay         tips    extra-tips cash-advance         Total 
-        SAYONE jorge         1001 - Kitchen         58.0         3.12          0.0       26.384           0.0          0.0        26.384 
-      MALDONADO leon         1001 - Kitchen         50.0          4.8          0.0      32.2112           0.0          0.0       32.2112 
+        SAYONE jorge         1001 - Kitchen         58.0         3.12          0.0      28.0224           0.0          0.0       28.0224 
+      MALDONADO leon         1001 - Kitchen         50.0          4.8          0.0      38.4496           0.0          0.0       38.4496 
         GALLARDO ted         1001 - Kitchen        41.67        10.03          0.0          0.0           0.0          0.0           0.0 
-     ALDERETE MIGUEL         1001 - Kitchen        52.28          9.5          0.0       6.5928           0.0          0.0        6.5928 
-    REED christopher         1001 - Kitchen        24.98          0.0          0.0      17.9512           0.0          0.0       17.9512 
-    WOHL christopher         1001 - Kitchen        86.83          3.4          0.0       7.6648           0.0          0.0        7.6648 
-    HERNANDEZ ulises         1001 - Kitchen       105.37         6.97          0.0       6.5928           0.0          0.0        6.5928 
-             Melinda         1002 - Servers        34.13          0.0          0.0        160.3           0.0        44.81        115.49 
-              Robert         1002 - Servers         36.1          0.0          0.0       176.33           0.0        13.38        162.95 
-               Megan         1002 - Servers        52.14         6.62          0.0       289.39           0.0        98.61        190.78 
-             Dominic         1002 - Servers        43.15          2.0          0.0        85.62           0.0        10.67         74.95 
-               jacki         1002 - Servers        24.17          0.0          0.0        64.19           0.0        26.01         38.18 
-             Tiffany         1002 - Servers        46.85         7.95          0.0       314.98           0.0       178.37        136.61 
+     ALDERETE MIGUEL         1001 - Kitchen        52.28          9.5          0.0        5.336           0.0          0.0         5.336 
+    REED christopher         1001 - Kitchen        24.98          0.0          0.0      18.1664           0.0          0.0       18.1664 
+    WOHL christopher         1001 - Kitchen        86.83          3.4          0.0      11.1008           0.0          0.0       11.1008 
+    HERNANDEZ ulises         1001 - Kitchen       105.37         6.97          0.0        5.336           0.0          0.0         5.336 
+             Melinda         1002 - Servers        34.13          0.0          0.0        76.81           0.0       146.53        -69.72 
+              Robert         1002 - Servers         36.1          0.0          0.0       258.54           0.0       335.66        -77.12 
+               Megan         1002 - Servers        52.14         6.62          0.0       308.03           0.0       269.39         38.64 
+             Dominic         1002 - Servers        43.15          2.0          0.0       164.31           0.0        59.26        105.05 
+               jacki         1002 - Servers        24.17          0.0          0.0        57.46           0.0        129.3        -71.84 
+             Tiffany         1002 - Servers        46.85         7.95          0.0       477.77           0.0       192.87         284.9 
              Kaushik          1007 - Owners         6.57          0.0          0.0          0.0           0.0          0.0           0.0 
                 Ritu          1007 - Owners         9.42          0.0          0.0          0.0           0.0          0.0           0.0 
                James          1007 - Owners        50.58        16.37          0.0          0.0           0.0          0.0           0.0 
-              Yogesh          1007 - Owners         54.5        20.81          0.0        22.02           0.0         4.01         18.01 
+              Yogesh          1007 - Owners         54.5        20.81          0.0          0.0           0.0       -14.01         14.01 
                  Ben 1008 - System Administrators         5.65          0.0          0.0          0.0           0.0          0.0           0.0 
-            nicholas          2008 - Runner        35.83          0.0          0.0       51.791           0.0          0.0        51.791 
-               david          2008 - Runner         27.0          6.5          0.0        8.241           0.0          0.0         8.241 
-             Katelyn            2009 - Host        22.94          1.5          0.0       34.878           0.0          0.0        34.878 
-             giselle            2009 - Host        27.81          0.0          0.0       40.059           0.0          0.0        40.059 
-               Paige            2009 - Host         32.9         2.07          0.0        4.692           0.0          1.9         2.792 
-            Savannah            2009 - Host        31.81          0.0          0.0       29.406           0.0         0.54        28.866 
-               House                  House          0.0          0.0          0.0     205.3883           0.0          0.0      205.3883 
-               Total                              960.68       101.64          0.0    1584.6821           0.0        378.3     1206.3821 
+            nicholas          2008 - Runner        35.83          0.0          0.0       65.788           0.0          0.0        65.788 
+               david          2008 - Runner         27.0          6.5          0.0         6.67           0.0          0.0          6.67 
+             Katelyn            2009 - Host        22.94          1.5          0.0      21.9265           0.0          0.0       21.9265 
+             giselle            2009 - Host        27.81          0.0          0.0      27.3985           0.0          0.0       27.3985 
+               Paige            2009 - Host         32.9         2.07          0.0        3.135           0.0        40.95       -37.815 
+            Savannah            2009 - Host        31.81          0.0          0.0      12.9575           0.0         7.54        5.4175 
+               House                  House          0.0          0.0          0.0     225.6394           0.0          0.0      225.6394 
+               Total                              960.68       101.64          0.0    1812.8461           0.0      1167.49      645.3561 

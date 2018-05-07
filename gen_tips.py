@@ -2,8 +2,8 @@ import sys
 import csv
 from datetime import datetime
 
-if len(sys.argv) != 4:
-    print "usage python gen_tips.py shift_report.csv cashoutreport.csv transactions.csv"
+if len(sys.argv) != 5:
+    print "usage python location gen_tips.py shift_report.csv cashoutreport.csv transactions.csv"
     exit(1)
 
 report = {'House':{'type':'House', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}}
@@ -16,7 +16,7 @@ shift = {'House' : [
      'Duration' : '0.0',
  } ]}
 #read the shift details
-with open(sys.argv[1]) as f:
+with open(sys.argv[2]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
@@ -35,16 +35,17 @@ for r in rows:
 
 trans = {}
 
-with open(sys.argv[2]) as f:
+with open(sys.argv[3]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
     cols = r.split(',')
-    trans[cols[15]] = {'Tip' : float(cols[16][1:]),
+    #if cols[20][0] == '"': cols[20] = cols[20][1:]
+    trans[cols[15]] = {'Tip' : float(cols[17]),
                        'type' : cols[14][1:-1],
-                       'Amount' : float(cols[20][1:])}
+                       'Amount' : float(cols[18])}
 
-with open(sys.argv[3]) as f:
+with open(sys.argv[4]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
@@ -86,13 +87,25 @@ for name, shifts in shift.iteritems():
 
 
 #how to share
-shared_tips= {
+chino_shared_tips= {
     'House' : 0.02, # 2%
     '1001 - Kitchen'  : 0.08,   #  8%
     '2008 - Host(ess)' : 0.05,    #  5%
     '2008 - Runner' : 0.10,    #  10%
     '2009 - Host' : 0.05,    #  5%
 }
+
+shared_tips= {
+    'House'  : 0.08,   #  8%
+    'Busser' : 0.10,     # 10%
+    'Food Runner' : 0.05,#  5%
+    '2008 - Host(ess)' : 0.02,    #  2%
+    '2009 - Host' : 0.02,    #  2%
+    '2007 - Lead Bartender': 0.05,   #  5%
+}
+
+if sys.argv[1] == 'chino':
+    shared_tips = chino_shared_tips
 
 #calculate the tips
 for tid, t in trans.iteritems():
