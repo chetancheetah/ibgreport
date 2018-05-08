@@ -28,34 +28,31 @@ for r in rows:
         name = cols[1][1:-1].split(' ')[-1]
     if name not in shift.keys(): shift[name] = []
     shift[name].append({'Staff Type': cols[2][1:-1],
-                            'Clock-In' : cols[4][1:] + cols[5][:-1],
-                            'Clock-Out': cols[10][1:] + cols[11][:-1],
-                            'Duration' : cols[6]})
+                        'Clock-In' : cols[4][1:] + cols[5][:-1],
+                        'Clock-Out': cols[10][1:] + cols[11][:-1],
+                        'Duration' : cols[6]})
 
 
-trans = {}
-
+trans = []
 with open(sys.argv[3]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
     cols = r.split(',')
-    #if cols[20][0] == '"': cols[20] = cols[20][1:]
-    trans[cols[15]] = {'Tip' : float(cols[17]),
-                       'type' : cols[14][1:-1],
-                       'Amount' : float(cols[18])}
+    trans.append({ 'id': cols[15],
+                   'Tip' : float(cols[17]),
+                   'type' : cols[14][1:-1],
+                   'Amount' : float(cols[16])})
 
 with open(sys.argv[4]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
     cols = r.split(',')
-    if cols[12] not in trans.keys():
-       # print cols
-       # print "Not found in end of report"
-        continue
-    trans[cols[12]]['Staff'] = cols[17][1:-1]
-    trans[cols[12]]['Bill Date'] = cols[15]
+    for t in trans:
+        if t['id'] == cols[12]:
+            t['Staff'] = cols[17][1:-1]
+            t['Bill Date'] = cols[15]
 
 #init the report
 report = {'House':{'type':'House', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}}
@@ -77,18 +74,22 @@ for name, shifts in shift.iteritems():
         hours += float(s['Duration'])
         old = s
     old['hours'] = hours
-    wk = 0
+    week_hours = {}
     for s in shifts:
         hours = s['hours'] if s['hours'] <= 8.0 else 8.0
         ot_hours = 0.0 if s['hours'] <= 8.0 else (s['hours'] - 8.0)
-        report[name]['hours'] += hours
-        report[name]['ot-hours'] += ot_hours
         fr = datetime.strptime(s['Clock-In'], '%B %d %Y %H:%M %p')
-        fw = fr.isocalendar()[1]
-        if wk == fw and report[name]['hours'] > 40.0:
-            report[name]['ot-hours'] += report[name]['hours'] - 40.0
-            report[name]['hours'] = 40.0
-        wk = fw
+        fr = fr.isocalendar()[1]
+        if fr not in week_hours.keys():
+            week_hours[fr] = {'hours':0.0, 'ot-hours':0.0}
+        week_hours[fr]['hours'] += hours
+        week_hours[fr]['ot-hours'] += ot_hours
+    for h in week_hours:
+        if week_hours[h]['hours'] > 40.0:
+            week_hours[h]['ot-hours'] += week_hours[h]['hours'] - 40.0
+            week_hours[h]['hours'] = 40.0
+        report[name]['hours'] += week_hours[h]['hours']
+        report[name]['ot-hours'] += week_hours[h]['ot-hours']
 
 #how to share
 chino_shared_tips= {
@@ -112,12 +113,12 @@ if sys.argv[1] == 'chino':
     shared_tips = chino_shared_tips
 
 #calculate the tips
-for tid, t in trans.iteritems():
+for  t in trans:
     # 70% belong to the server
     if t['Staff'] not in report.keys() :
-        report['House']['tips'] += t['Tip']
+        report['House']['tips'] += t['Tip'] * 0.7
     else:
-        report[t['Staff']]['tips'] += t['Tip']
+        report[t['Staff']]['tips'] += t['Tip'] * 0.7
         pass
     if t['type'] == 'CASH':
         if t['Staff'] not in report.keys() :
@@ -159,7 +160,7 @@ for tid, t in trans.iteritems():
                 else:
                     to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
                 if  fr <= tran and tran <= to:
-                    report[name]['tips'] += (t['Tip']*shared_tips[staff])
+                    report[name]['tips'] += (t['Tip']*shared_tips[staff]) / worked
 
 print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
 hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
@@ -170,6 +171,5 @@ for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
     pay += v['pay']
     tips += v['tips']
     extra_tips += v['extra-tips']
-    cash += v['cash']    
+    cash += v['cash']
 print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
-    
