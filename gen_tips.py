@@ -2,8 +2,8 @@ import sys
 import csv
 from datetime import datetime
 
-if len(sys.argv) != 5:
-    print "usage python location gen_tips.py shift_report.csv cashoutreport.csv transactions.csv"
+if len(sys.argv) != 6:
+    print "usage python gen_tips.py location format shift_report.csv cashoutreport.csv transactions.csv"
     exit(1)
 
 report = {'House':{'type':'House', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}}
@@ -16,7 +16,7 @@ shift = {'House' : [
      'Duration' : '0.0',
  } ]}
 #read the shift details
-with open(sys.argv[2]) as f:
+with open(sys.argv[3]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
@@ -34,7 +34,7 @@ for r in rows:
 
 
 trans = []
-with open(sys.argv[3]) as f:
+with open(sys.argv[4]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
@@ -44,7 +44,7 @@ for r in rows:
                    'type' : cols[14][1:-1],
                    'Amount' : float(cols[16])})
 
-with open(sys.argv[4]) as f:
+with open(sys.argv[5]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
@@ -162,14 +162,27 @@ for  t in trans:
                 if  fr <= tran and tran <= to:
                     report[name]['tips'] += (t['Tip']*shared_tips[staff]) / worked
 
-print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
-hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
-    print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
-    hours += v['hours']
-    ot_hours += v['ot-hours']
-    pay += v['pay']
-    tips += v['tips']
-    extra_tips += v['extra-tips']
-    cash += v['cash']
-print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
+if sys.argv[2] == 'csv':
+    print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
+    hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
+        print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
+        hours += v['hours']
+        ot_hours += v['ot-hours']
+        pay += v['pay']
+        tips += v['tips']
+        extra_tips += v['extra-tips']
+        cash += v['cash']
+    print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
+else:
+    print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
+    hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
+        print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
+        hours += v['hours']
+        ot_hours += v['ot-hours']
+        pay += v['pay']
+        tips += v['tips']
+        extra_tips += v['extra-tips']
+        cash += v['cash']
+    print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
