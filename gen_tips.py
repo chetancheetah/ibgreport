@@ -96,7 +96,7 @@ chino_shared_tips= {
     'House' : 0.02, # 2%
     '1001 - Kitchen'  : 0.08,   #  8%
     '2008 - Host(ess)' : 0.05,    #  5%
-    '2008 - Runner' : 0.10,    #  10%
+    '2008 - Runner' : 0.15,    #  15%
     '2009 - Host' : 0.05,    #  5%
 }
 
@@ -110,6 +110,7 @@ shared_tips= {
 }
 
 if sys.argv[1] == 'chino':
+    print "Chino Hills Report"
     shared_tips = chino_shared_tips
 
 #calculate the tips
@@ -143,7 +144,7 @@ for  t in trans:
                     worked += 1
         if worked == 0:
             # if there was no busser  or food runner then assumption the server would have bussed
-            if staff == 'Busser' or staff == 'Food Runner':
+            if staff == 'Busser' or staff == '2008 - Runner':
                 report[t['Staff'] if t['Staff'] in report.keys() else 'House']['extra-tips'] += t['Tip']*shared_tips[staff]
             else:
                 report['House']['tips'] += t['Tip']*shared_tips[staff]
