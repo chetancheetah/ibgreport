@@ -34,16 +34,20 @@ for r in rows:
 
 
 trans = []
+tips = 0.0
+cash = 0.0
 with open(sys.argv[4]) as f:
     rows = f.readlines()
 for r in rows:
     if not "End of Report" in r: continue
     cols = r.split(',')
+    tips += float(cols[17])
     trans.append({ 'id': cols[15],
                    'Tip' : float(cols[17]),
                    'type' : cols[14][1:-1],
                    'Amount' : float(cols[16])})
-
+    if cols[14][1:-1] == "CASH":
+        cash += float(cols[16])
 with open(sys.argv[5]) as f:
     rows = f.readlines()
 for r in rows:
@@ -95,7 +99,6 @@ for name, shifts in shift.iteritems():
 chino_shared_tips= {
     'House' : 0.02, # 2%
     '1001 - Kitchen'  : 0.08,   #  8%
-    '2008 - Host(ess)' : 0.05,    #  5%
     '2008 - Runner' : 0.15,    #  15%
     '2009 - Host' : 0.05,    #  5%
 }
@@ -110,7 +113,7 @@ shared_tips= {
 }
 
 if sys.argv[1] == 'chino':
-    print "Chino Hills Report"
+    print "Chino Hills Report total_tips %f cash_advance %f" % (tips, cash)
     shared_tips = chino_shared_tips
 
 #calculate the tips

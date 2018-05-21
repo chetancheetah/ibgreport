@@ -1,4 +1,4 @@
-Chino Hills Report
+Chino Hills Report total_tips 3678.340000 cash_advance 4847.490000
                 Name,                   Type,        Hours,     OT-hours,          Pay,         tips,    extra-tips, cash-advance,         Total, 
     WOHL christopher,         1001 - Kitchen,        62.94,         1.88,          0.0,          0.0,           0.0,          0.0,           0.0, 
     HERNANDEZ ulises,         1001 - Kitchen,         80.0,        13.78,          0.0,          0.0,           0.0,          0.0,           0.0, 
@@ -20,5 +20,5 @@ Chino Hills Report
              giselle,            2009 - Host,        36.25,          0.0,          0.0,       62.507,          0.45,       116.21,       -53.253, 
              Katelyn,            2009 - Host,         26.5,         1.17,          0.0,      59.6855,         0.747,       120.68,      -60.2475, 
                Paige,            2009 - Host,        23.13,          1.0,          0.0,       14.633,        1.6245,       122.84,     -106.5825, 
-               House,                  House,          0.0,          0.0,          0.0,     497.9488,           0.0,          0.0,      497.9488, 
-               Total,                       ,       867.24,       152.68,          0.0,    3530.0985,      332.1585,      4847.49,      -985.233, 
+               House,                  House,          0.0,          0.0,          0.0,     314.0318,           0.0,          0.0,      314.0318, 
+               Total,                       ,       867.24,       152.68,          0.0,    3346.1815,      332.1585,      4847.49,      -1169.15, 
