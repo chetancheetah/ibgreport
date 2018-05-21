@@ -97,8 +97,8 @@ for name, shifts in shift.iteritems():
 
 #how to share
 chino_shared_tips= {
-    'House' : 0.02, # 2%
-    '1001 - Kitchen'  : 0.08,   #  8%
+    'House' : 0.10, # 10%
+#    '1001 - Kitchen'  : 0.08,   #  8%
     '2008 - Runner' : 0.15,    #  15%
     '2009 - Host' : 0.05,    #  5%
 }
