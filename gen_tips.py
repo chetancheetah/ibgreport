@@ -199,14 +199,14 @@ if sys.argv[2] == 'csv':
         cash += v['cash']
     print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
 else:
-    print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
+    print "{:>20}\t{:>22}\t {:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
     hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
-        print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
+        print "{:>20}\t {:>22}\t {:>12}\t {:>12}\t {:>12}\t {:>12}\t  {:>12}\t {:>12}\t  {:>12}\t ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
         hours += v['hours']
         ot_hours += v['ot-hours']
         pay += v['pay']
         tips += v['tips']
         extra_tips += v['extra-tips']
         cash += v['cash']
-    print "{:>20} {:>22} {:>12} {:>12} {:>12} {:>12}  {:>12} {:>12}  {:>12} ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
+    print "{:>20}\t {:>22}\t {:>12}\t {:>12}\t {:>12}\t {:>12}\t  {:>12}\t {:>12}\t  {:>12}\t ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
