@@ -100,6 +100,8 @@ staff_types = {
     '1001 - Kitchen' : 'BOH',
     '1002 - Servers' : 'server',
     '1007 - Owners' : 'owner',
+    '1005 - Wait Staff Managers' : 'manager',
+    '1006 - Managers' : 'manager',
     '2008 - Runner' : 'runner',
     '2009 - Host' : 'host',
     '2007 - Lead Bartender' : 'bartender'
