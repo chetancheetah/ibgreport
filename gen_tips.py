@@ -103,8 +103,11 @@ staff_types = {
     '1005 - Wait Staff Managers' : 'manager',
     '1006 - Managers' : 'manager',
     '2008 - Runner' : 'runner',
+    '2011 - Food Runner' : 'runner',
+    '2008 - Host(ess)' : 'host',
     '2009 - Host' : 'host',
-    '2007 - Lead Bartender' : 'bartender'
+    '2007 - Lead Bartender' : 'bartender',
+    '2009 - Bartender' : 'bartender',
 }
 
 #how to share
@@ -123,9 +126,11 @@ bellevue_shared_tips = {
 }
 
 shared_tips= {
-    'kitchen' : 0.10, # 10%
-    'runner' : 0.15,    #  15%
-    'host' : 0.05,    #  5%
+    'kitchen' : 0.08, # 8%
+    'runner' : 0.05,    #  15%
+    'host' : 0.02,    #  2%
+    'bartender' : 0.05,    #  2%
+    'busser' : 0.10, # 10%
 }
 
 if sys.argv[1] == 'chino':
