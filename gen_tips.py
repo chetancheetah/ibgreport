@@ -108,6 +108,7 @@ staff_types = {
     '2009 - Host' : 'host',
     '2007 - Lead Bartender' : 'bartender',
     '2009 - Bartender' : 'bartender',
+    '1008 - System Administrators' : 'manager',
 }
 
 #how to share
