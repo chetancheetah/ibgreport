@@ -115,9 +115,8 @@ staff_types = {
 #how to share
 chino_shared_tips= {
     'kitchen' : 0.10, # 10%
-    'runner' : 0.5,    #  5%
+    'runner' : 0.15,    #  5%
     'host' : 0.05,    #  5%
-    'busser' : 0.10,  # 10%
 }
 
 bellevue_shared_tips = {
