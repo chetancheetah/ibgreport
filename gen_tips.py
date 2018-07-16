@@ -97,7 +97,7 @@ for name, shifts in shift.iteritems():
 
 staff_types = {
     'Kitchen' : 'kitchen',
-    '1001 - Kitchen' : 'BOH',
+    '1001 - Kitchen' : 'kitchen',
     '1002 - Servers' : 'server',
     '1007 - Owners' : 'owner',
     '1005 - Wait Staff Managers' : 'manager',
