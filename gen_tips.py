@@ -104,6 +104,7 @@ staff_types = {
     '1006 - Managers' : 'manager',
     '2008 - Runner' : 'runner',
     '2011 - Food Runner' : 'runner',
+    '2012 - Busser' : 'nusser',
     '2008 - Host(ess)' : 'host',
     '2009 - Host' : 'host',
     '2007 - Lead Bartender' : 'bartender',
@@ -114,8 +115,9 @@ staff_types = {
 #how to share
 chino_shared_tips= {
     'kitchen' : 0.10, # 10%
-    'runner' : 0.15,    #  15%
+    'runner' : 0.5,    #  5%
     'host' : 0.05,    #  5%
+    'busser' : 0.10,  # 10%
 }
 
 bellevue_shared_tips = {
