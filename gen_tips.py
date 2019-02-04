@@ -12,7 +12,7 @@ shift = {'Kitchen' : [
     {'Name' : 'Kitchen',
      'Staff Type' : 'Kitchen',
      'Clock-In'  : 'January 01 2000 12:00 AM',
-     'Clock-Out' : 'January 01 2100 12:00 AM',
+     'Clock-Out' : 'January 01 2000 12:00 AM',
      'Duration' : '0.0',
  } ]}
 #read the shift details
@@ -115,7 +115,7 @@ staff_types = {
 
 #how to share
 chino_shared_tips= {
-    'kitchen' : 0.8, # 8%
+    'kitchen' : 0.08, # 8%
     'runner' : 0.15,    #  5%
     'host' : 0.07,    #  7%
 }
@@ -124,7 +124,7 @@ fremont_shared_tips= {
     'host' : 0.02,    #  2%
     'bartender' : 0.05,    #  5%
     'runner' : 0.05, # 5%
-    'kitchen' : 0.8, # 8%
+    'kitchen' : 0.08, # 8%
     'busser' : 0.10, # 10%
 }
 
@@ -163,7 +163,6 @@ for  t in trans:
         report['Kitchen']['tips'] += t['Tip'] * 0.7
     else:
         report[t['Staff']]['tips'] += t['Tip'] * 0.7
-        pass
     if t['type'] == 'CASH':
         if t['Staff'] not in report.keys() :
             report['Kitchen']['cash'] += t['Amount']
@@ -185,7 +184,7 @@ for  t in trans:
                     try:
                         to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
                     except:
-                        to = datetime.now()
+                        to = fr
                 if  fr <= tran and tran <= to:
                     worked += 1
         if worked == 0:
@@ -195,7 +194,6 @@ for  t in trans:
             else:
                 report['Kitchen']['tips'] += t['Tip']*shared_tips[staff]
             continue
-#            print "No one worked as " + staff + " for bill " + t['Bill Number'] + " at " + t['Bill Date']
         for name, val in shift.iteritems():
             #iterate over the shifts
             for s in val:
@@ -208,7 +206,7 @@ for  t in trans:
                     try:
                         to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
                     except:
-                        to = datetime.now()
+                        to = fr
                 if  fr <= tran and tran <= to:
                     report[name]['tips'] += (t['Tip']*shared_tips[staff]) / worked
 
