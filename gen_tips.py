@@ -103,8 +103,9 @@ staff_types = {
     '1005 - Wait Staff Managers' : 'manager',
     '1006 - Managers' : 'manager',
     '2008 - Runner' : 'runner',
+    '2010 - Busser' : 'busser',
     '2011 - Food Runner' : 'runner',
-    '2012 - Busser' : 'nusser',
+    '2012 - Busser' : 'busser',
     '2008 - Host(ess)' : 'host',
     '2009 - Host' : 'host',
     '2007 - Lead Bartender' : 'bartender',
@@ -117,6 +118,14 @@ chino_shared_tips= {
     'kitchen' : 0.8, # 8%
     'runner' : 0.15,    #  5%
     'host' : 0.07,    #  7%
+}
+
+fremont_shared_tips= {
+    'host' : 0.02,    #  2%
+    'bartender' : 0.05,    #  5%
+    'runner' : 0.05, # 5%
+    'kitchen' : 0.8, # 8%
+    'busser' : 0.10, # 10%
 }
 
 bellevue_shared_tips = {
@@ -138,6 +147,10 @@ shared_tips= {
 if sys.argv[1] == 'chino':
     print "Chino Hills Report total_tips %f cash_advance %f" % (tips, cash)
     shared_tips = chino_shared_tips
+
+if sys.argv[1] == 'fremont':
+    print "Fremont Hills Report total_tips %f cash_advance %f" % (tips, cash)
+    shared_tips = fremont_shared_tips
 
 if sys.argv[1] == 'bellevue':
     print "Bellevue Report total_tips %f cash_advance %f" % (tips, cash)
@@ -169,7 +182,10 @@ for  t in trans:
                 if s['Clock-Out'] == "\"\"":
                     to = datetime.now()
                 else:
-                    to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
+                    try:
+                        to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
+                    except:
+                        to = datetime.now()
                 if  fr <= tran and tran <= to:
                     worked += 1
         if worked == 0:
@@ -189,7 +205,10 @@ for  t in trans:
                 if s['Clock-Out'] == "\"\"":
                     to =  datetime.now()
                 else:
-                    to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
+                    try:
+                        to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
+                    except:
+                        to = datetime.now()
                 if  fr <= tran and tran <= to:
                     report[name]['tips'] += (t['Tip']*shared_tips[staff]) / worked
 
