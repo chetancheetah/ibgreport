@@ -2,11 +2,9 @@ import sys
 import csv
 from datetime import datetime
 
-if len(sys.argv) != 6:
+if len(sys.argv) < 6:
     print "usage python gen_tips.py location format shift_report.csv cashoutreport.csv transactions.csv"
     exit(1)
-
-report = {'Kitchen':{'type':'Kitchen', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}}
 
 shift = {'Kitchen' : [
     {'Name' : 'Kitchen',
@@ -23,14 +21,15 @@ for r in rows:
     cols = r.split(',')
     if cols[1] == '': continue
     if cols[2][1:-1] == '1001 - Kitchen':
-        name = cols[1][1:-1]
+        name = cols[1][1:-1].split(' ')[-1]
     else:
         name = cols[1][1:-1].split(' ')[-1]
     if name not in shift.keys(): shift[name] = []
     shift[name].append({'Staff Type': cols[2][1:-1],
                         'Clock-In' : cols[4][1:] + cols[5][:-1],
                         'Clock-Out': cols[10][1:] + cols[11][:-1],
-                        'Duration' : cols[6]})
+                        'Duration' : cols[6],
+                        'tips':0.0, 'worked':0})
 
 
 trans = []
@@ -59,8 +58,8 @@ for r in rows:
             t['Bill Date'] = cols[15]
 
 #init the report
-report = {'Kitchen':{'type':'Kitchen', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}}
-for u in shift.keys(): report[u] = {'type':shift[u][0]['Staff Type'],'hours':0.0, 'ot-hours':0.0, 'pay': 0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0}
+report = {'Kitchen':{'type':'Kitchen', 'hours':0.0, 'ot-hours':0.0, 'pay':0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0, 'sale':0.0}}
+for u in shift.keys(): report[u] = {'type':shift[u][0]['Staff Type'],'hours':0.0, 'ot-hours':0.0, 'pay': 0.0, 'tips':0.0, 'extra-tips':0.0, 'cash':0.0, 'sale':0.0}
 
 #calculate the OT hours
 for name, shifts in shift.iteritems():
@@ -161,8 +160,10 @@ for  t in trans:
     # 70% belong to the server
     if t['Staff'] not in report.keys() :
         report['Kitchen']['tips'] += t['Tip'] * 0.7
+        report['Kitchen']['sale'] += t['Amount']
     else:
         report[t['Staff']]['tips'] += t['Tip'] * 0.7
+        report[t['Staff']]['sale'] += t['Amount']
     if t['type'] == 'CASH':
         if t['Staff'] not in report.keys() :
             report['Kitchen']['cash'] += t['Amount']
@@ -170,19 +171,19 @@ for  t in trans:
             report[t['Staff']]['cash'] += t['Amount']
     #now lets split it
     #distribute the tips amongst the helpers
+    tran = datetime.strptime(t['Bill Date'], '%m/%d/%Y %I:%M:%S%p')
     for staff in shared_tips.keys():
         worked = 0
         for name, shifts in shift.iteritems():
             #iterate over the shifts
             for s in shifts:
                 if staff_types[s['Staff Type']] != staff: continue
-                tran = datetime.strptime(t['Bill Date'], '%m/%d/%Y %H:%M:%S%p')
-                fr = datetime.strptime(s['Clock-In'], '%B %d %Y %H:%M %p')
+                fr = datetime.strptime(s['Clock-In'], '%B %d %Y %I:%M %p')
                 if s['Clock-Out'] == "\"\"":
                     to = datetime.now()
                 else:
                     try:
-                        to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
+                        to = datetime.strptime(s['Clock-Out'], '%B %d %Y %I:%M %p')
                     except:
                         to = fr
                 if  fr <= tran and tran <= to:
@@ -198,39 +199,50 @@ for  t in trans:
             #iterate over the shifts
             for s in val:
                 if staff_types[s['Staff Type']] != staff: continue
-                tran = datetime.strptime(t['Bill Date'], '%m/%d/%Y %H:%M:%S%p')
-                fr = datetime.strptime(s['Clock-In'], '%B %d %Y %H:%M %p')
+                fr = datetime.strptime(s['Clock-In'], '%B %d %Y %I:%M %p')
                 if s['Clock-Out'] == "\"\"":
                     to =  datetime.now()
                 else:
                     try:
-                        to = datetime.strptime(s['Clock-Out'], '%B %d %Y %H:%M %p')
+                        to = datetime.strptime(s['Clock-Out'], '%B %d %Y %I:%M %p')
                     except:
                         to = fr
                 if  fr <= tran and tran <= to:
                     report[name]['tips'] += (t['Tip']*shared_tips[staff]) / worked
+                    s['tips'] += (t['Tip']*shared_tips[staff]) / worked
+                    s['worked'] = worked
 
 if sys.argv[2] == 'csv':
-    print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
-    hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total', 'Sale')
+    hours, ot_hours, pay, tips, extra_tips, cash, sale = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
-        print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
+        print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12}, {:>12}, {:>12},".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'], v['sale'])
         hours += v['hours']
         ot_hours += v['ot-hours']
         pay += v['pay']
         tips += v['tips']
         extra_tips += v['extra-tips']
         cash += v['cash']
-    print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
+        sale += v['sale']
+    print "{:>20}, {:>22}, {:>12}, {:>12}, {:>12}, {:>12},  {:>12}, {:>12},  {:>12}, {:>12},".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash, sale)
 else:
-    print "{:>20}\t{:>22}\t {:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total')
-    hours, ot_hours, pay, tips, extra_tips, cash = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+    print "{:>20}\t{:>22}\t {:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}\t{:>12}".format('Name','Type', 'Hours', 'OT-hours', 'Pay', 'tips', 'extra-tips', 'cash-advance', 'Total', 'sale')
+    hours, ot_hours, pay, tips, extra_tips, cash, sale = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     for k, v in sorted(report.items(), key=lambda x:x[1]['type']):
-        print "{:>20}\t {:>22}\t {:>12}\t {:>12}\t {:>12}\t {:>12}\t  {:>12}\t {:>12}\t  {:>12}\t ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'])
+        print "{:>20}\t {:>22}\t {:>12}\t {:>12}\t {:>12}\t {:>12}\t  {:>12}\t {:>12}\t  {:>12}\t ".format(k, v['type'], v['hours'], v['ot-hours'], v['pay'], v['tips'], v['extra-tips'], v['cash'], v['pay'] + v['tips'] + v['extra-tips'] - v['cash'], v['sale'])
         hours += v['hours']
         ot_hours += v['ot-hours']
         pay += v['pay']
         tips += v['tips']
         extra_tips += v['extra-tips']
         cash += v['cash']
-    print "{:>20}\t {:>22}\t {:>12}\t {:>12}\t {:>12}\t {:>12}\t  {:>12}\t {:>12}\t  {:>12}\t ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash)
+        sale += v['sale']
+    print "{:>20}\t {:>22}\t {:>12}\t {:>12}\t {:>12}\t {:>12}\t  {:>12}\t {:>12}\t  {:>12}\t {:>12}\t ".format("Total", "", hours, ot_hours, pay, tips, extra_tips, cash, pay+tips+extra_tips-cash, sale)
+
+if len(sys.argv) == 7:
+    name = sys.argv[6]
+    for n, shifts in shift.iteritems():
+        if name != n: continue
+        #iterate over the shifts
+        for s in shifts:
+            print 'In - %s, Out %s, Duration %s hrs Tips %f worked %d'%(s['Clock-In'],s['Clock-Out'],s['Duration'], s['tips'], s['worked'])
